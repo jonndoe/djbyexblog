@@ -1,0 +1,69 @@
+version: '3.7'
+
+
+services:
+
+  web:
+
+    build: .
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    #command: gunicorn crud_project.wsgi -b 0.0.0.0:8000
+
+    environment:
+      - ENVIRONMENT=development
+
+      - SECRET_KEY=&r+z0uy7sb5y%d647)7%+u--2bpkt(dmi^u7*t5h0ymoog96q1
+
+      #- DATABASE_NAME=djbyexblog
+      #- DATABASE_USER=docker
+      #- DATABASE_PASSWORD=docker
+      #- DATABASE_HOST=db
+      #- DATABASE_PORT=5432
+
+      - SQL_ENGINE=django.db.backends.postgresql
+      - SQL_DATABASE=djbyexblog
+      - SQL_USER=docker
+      - SQL_PASSWORD=docker
+      - SQL_HOST=db
+      - SQL_PORT=5432
+
+
+      - DEBUG=1
+
+    # A new folder ./code/ will be created in the root dir of
+    # container and
+    # All code changed in directory /code/ inside container
+    # will be sync with out host folder . (local) where this file sits
+    # and vice versa
+    volumes:
+
+      - .:/code
+
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+  db:
+    image: postgres:11
+
+    # this means new volume (books_)?????????postgres_data will be created
+    # in our host /var/lib/docker/volumes
+    # and this folder/volume will be populated with data from
+    # container's folder /var/lib/postgresql/data/
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=djbyexblog
+
+    ports:
+      - 5432:5432
+
+
+
+volumes:
+
+  postgres_data:
