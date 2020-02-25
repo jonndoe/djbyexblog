@@ -7,13 +7,13 @@
 
   <ul>
     {% for cheese in cheese_list %}
-      <li><a href="#TODO">{{ cheese.name }}</a> </li>
+      <li><a href="{% url 'example:detail' cheese.slug %}">{{ cheese.name }}</a> </li>
     {% endfor %}
   </ul>
   <h3>Here we use object_list:</h3>
   <ul>
     {% for cheese in object_list %}
-      <li><a href="#TODO">{{ cheese.name }}</a> </li>
+      <li><a href="{% url 'example:detail' cheese.slug">{{ cheese.name }}</a> </li>
     {% endfor %}
   </ul>
 {% endblock content %}
