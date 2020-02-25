@@ -28,3 +28,6 @@ TODO:
 
  - run pytest from docker_container itself(now I run it from conda_env)
  - assertContain() doesnt work in tests.
+
+OBSERVATIONS:
+ - p.240 (name="Stracchino") to be removed, for logical continuation.
