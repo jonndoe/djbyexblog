@@ -1,7 +1,15 @@
 djbyexblog
 =============================
 
-Some blog project
+This is a simple blog project. We use docker-containers here, one for django project and one
+for postgresql database.
+
+
+To RUN:
+
+ - conda activate env38_dj_by_ex_blog
+
+ - sudo docker-compose up
 
 
 
