@@ -25,5 +25,6 @@ To RUN:
 
 
 TODO:
+
  - run pytest from docker_container itself(now I run it from conda_env)
  - assertContain() doesnt work in tests.
