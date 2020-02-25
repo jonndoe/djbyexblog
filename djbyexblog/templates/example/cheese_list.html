@@ -16,4 +16,12 @@
       <li><a href="{% url 'example:detail' cheese.slug">{{ cheese.name }}</a> </li>
     {% endfor %}
   </ul>
+
+  <hr/>
+  <p>Don't see a cheese listed here?</p>
+  <p>
+    <a class="btn btn-primary" href="{% url 'example:add' %}" role="button">
+      Add Cheese
+    </a>
+  </p>
 {% endblock content %}
