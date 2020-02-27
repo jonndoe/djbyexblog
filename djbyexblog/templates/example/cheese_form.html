@@ -2,7 +2,15 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Add Cheese{% endblock %}
+{% block title %}
+
+{% if cheese %}
+  <h1>Update Cheese</h1>
+{% else %}
+  <h1>Add Cheese</h1>
+{% endif %}
+
+{% endblock %}
 
 {% block content %}
   <h1>Add Cheese</h1>
