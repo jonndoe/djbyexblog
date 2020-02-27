@@ -31,3 +31,5 @@ TODO:
 
 OBSERVATIONS:
  - p.240 (name="Stracchino") to be removed, for logical continuation.
+ - p. ___ def test_good_cheese_detail_view(rf, admin_user):
+      we dont need admin user here.
