@@ -6,8 +6,13 @@ app_name = "blog"
 urlpatterns = [
     path(
         route='',
-        view=views.BlogListView.as_view(),
+        view=views.PostListView.as_view(),
         name='list',
+    ),
+    path(
+        route='<int:year>/<int:month>/<int:day>/<slug:post>/',
+        view=views.PostDetailView.as_view(),
+        name='detail',
     ),
 
 ]

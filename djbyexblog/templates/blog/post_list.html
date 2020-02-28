@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Post List{% endblock title %}
+
+{% block content %}
+  <h2>Posts List</h2>
+
+  <ul>
+    {% for post in view.get_object %}
+      <li><a href="#">{{ post }}</a> </li>
+    {% endfor %}
+  </ul>
+
+
+  <hr/>
+  <p>Don't see a post listed here?</p>
+  <p>
+    <a class="btn btn-primary" href="#" role="button">
+      Add Post
+    </a>
+  </p>
+{% endblock content %}

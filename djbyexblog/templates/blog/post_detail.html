@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Posts: {{ Post.title }}{% endblock title %}
+
+
+
+{% block content %}
+
+  <p>
+    <a class="btn btn-primary"
+       href="#"
+       role="button">
+      Update
+    </a>
+  </p>
+
+  <h2>{{ post.title }}</h2>
+
+  {% if post.title %}
+    <p>Title: {{ post.title }}</p>
+  {% endif %}
+
+  {% if post.body %}
+    <p>{{ post.body }}</p>
+  {% endif %}
+
+  {% if post.slug %}
+    <p>Post slug is : {{ post.slug }}
+    </p>
+  {% endif %}
+
+  <hr/>
+
+  <h3>Submitted by
+    <a href="{% url 'users:detail' post.author.username %}">
+      {{ post.author.username }}
+    </a>
+  </h3>
+  {% if post.author.name %}
+    <p>{{ post.author.name }}</p>
+  {% endif %}
+
+
+{% endblock content %}
