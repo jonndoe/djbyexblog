@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if object %}
+Edit content "{{ object.title }}"
+{% else %}
+Add a new content
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="w3-container w3-center">
+    <p> ( posts/manage/content/form.html )</p>
+    <h1>
+        {% if object %}
+          Edit content "{{ object.title }}"
+        {% else %}
+          Add a new content
+        {% endif %}
+    </h1>
+    <div class="module w3-container">
+    <h2>Post info</h2>
+        <form class="w3-container w3-card-4 w3-center w3-input"   action="" method="post" enctype="multipart/form-data">
+           {{ form.as_p }}
+           {% csrf_token %}
+        <p><input type="submit" value="Save content"></p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

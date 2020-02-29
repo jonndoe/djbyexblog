@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load course %}
+
+{% block title %}
+Post: {{ post.title }}
+{% endblock %}
+
+
+{% block content %}
+<div class="module w3-container">
+    <br><br><br><br>
+    <div class="w3-container w3-quarter w3-center">
+    <h3 class="w3-center">Add content:</h3>
+    <ul class="content-types" id="list-content">
+        <li><a href="{% url 'post_content_create' post.id 'text' %}"><button class="w3-button w3-theme w3-block">Text</button> </a></li>
+        <li><a href="{% url 'post_content_create' post.id 'image' %}"><button class="w3-button w3-theme w3-block">Image</button></a></li>
+    </ul>
+    </div>
+
+
+    <div id="module-contents" class="w3-container w3-threequarter w3-center">
+    <h2>{{ post.title }}</h2>
+    <p>template url: posts/manage/post/content_list.html</p>
+    <h3>Post contents:</h3>
+
+        {% for content in post.contents.all %}
+            <div data-id="{{ content.id }}" class="w3-container w3-theme-l4 w3-margin w3-padding">
+                {% with item=content.item %}
+                <p class="w3-left"><h5><strong>{{ item|model_name }}</strong></h5> <span class="order">#{{ content.order|add:1}} </span></p>
+                    <p>{{ item }}</p>
+                    <a href="{% url 'post_content_update' post.id item|model_name item.id %}" class="w3-button w3-green w3-block">Edit</a>
+                    <form action="{% url 'post_content_delete' content.id %}" method="post">
+                        <input type="submit" value="Delete" class=" w3-red">
+                        {% csrf_token %}
+                    </form>
+                {% endwith %}
+            </div>
+        {% empty %}
+            <p>This module has no contents yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block domready %}
+    $('#module-contents').sortable({
+        stop: function(event, ui) {
+            contents_order = {};
+            $('#module-contents').children().each(function(){
+			    // update the order field
+                $(this).find('.order').text($(this).index() + 1);
+                // associate the module's id with its order
+                contents_order[$(this).data('id')] = $(this).index();
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "content_order" %}',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(contents_order),
+            });
+        }
+    });
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, Subject
 
 
 
@@ -15,6 +15,9 @@ class PostAdmin(admin.ModelAdmin):
 
 
 
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title',)}
 
 
 

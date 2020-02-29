@@ -6,6 +6,7 @@ from django.views.generic import (
     View,
     TemplateView,
 )
+from django.views.generic.base import TemplateResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from .models import Post
@@ -28,6 +29,7 @@ class PostListView(ListView):
     def get_object(self):
         posts = Post.published.all()
         return posts
+
 
 
 class PostDetailView(DetailView):

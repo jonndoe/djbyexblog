@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+{% if object %}
+Edit post "{{ object.title }}"
+{% else %}
+     Create a new post
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="w3-container w3-center">
+    <p>posts/manage/post/form.html</p>
+    <h1>
+        {% if object %}
+            Edit post "{{ object.title }}"
+        {% else %}
+            Create a new post
+        {% endif %}
+    </h1>
+
+        <h2>Post info</h2>
+
+        <div class="w3-container">
+            <form class="w3-container w3-card-4 w3-center w3-input" action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p><button class="w3-button w3-blue" type="submit">Save post</button></p>
+            </form>
+        </div>
+
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ object.title }}
+{% endblock %}
+
+
+<!-- hero images style -->
+{% block style %}
+<style>
+body,h1,h5 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+    //background-image: url('{% static 'img/no_image.png' %}');
+    background-image: url('{% if post.postavatar %}{{ post.postavatar.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+.comment:nth-child(even) {
+    background:red;
+    }
+</style>
+{% endblock style %}
+
+
+
+
+{% block content %}
+<!-- Page content -->
+<div class="w3-content" style="max-width:2000px;margin-top:1px">
+
+
+
+
+
+<!-- problem with background hero image, if we remove <br> from div then it dissaperas completely.....to be fixed -->
+    <div class="bgimg w3-display-container w3-text-white">
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+   </div>
+
+
+
+  <!-- The Post body Section -->
+  <div class="w3-container w3-content" style="max-width:1000px" id="band">
+    <div class="w3-card w3-margin-top">
+
+    <div class="w3-container w3-margin">
+    <h6>posts/post/detail.html</h6>
+    <h2>{{ post.title }}</h2>
+      <p>
+         {% if post.tags.all %}
+      Tags:
+         {% endif %}
+      {% for tag in post.tags.all %}
+      <a href="{% url 'post_list_by_tag' tag.slug %}">
+        <span class="w3-tag">{{ tag.name }}</span>
+      </a>
+      {% endfor %}
+       </p>
+        {% with subject=post.subject %}
+        <div>
+            <p>
+            <a href="{% url 'post_list_subject' subject.slug %}"> {{ subject.title }}</a>. {{ post.contents.count }} contents.
+            </p>
+        </div>
+    {% endwith %}
+    <h5><span class="w3-opacity">Published {{ post.publish }} by {{ post.owner }}</span></h5>
+    </div>
+
+
+              <!-- Modal for full size images on click-->
+             <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
+               <div class="w3-modal-content w3-center w3-transparent" style="width:100%">
+                 <img id="img01" class="w3-image" style="max-height:100vh">
+               </div>
+              <span class="w3-button w3-red w3-xxxlarge w3-display-topright w3-opacity">×</span>
+   	          <span class="w3-large w3-display-bottommiddle" id="imgtext"></span>
+             </div>
+
+
+
+    <div class="w3-container w3-white">
+        <div class="module">
+        {% for content in post.contents.all %}
+        {% with item=content.item %}
+            {{ item.render }}
+        {% endwith %}
+        {% empty %}
+            No contents in this moduleee yet...
+        {% endfor %}
+        </div>
+    </div>
+    </div>
+
+
+    <div class="w3-card">
+    <p class="w3-left"><button class="w3-button w3-padding-large w3-white w3-border" onclick="likeFunction(this)"><b><i class="fa fa-thumbs-up"></i> Like</b></button></p>
+    <p class="w3-left"><button class="w3-button w3-padding-large w3-white w3-border" onclick="hideBlogCommentsFunctionByStyle('demo12')" id="myBtn"><b><i class="fa fa-comment"></i> Comment</b></button></p>
+    </div>
+
+    <hr>
+
+         <div class="w3-container">
+          <div class="w3-card w3-margin-bottom w3-theme-l5 w3-small" id="demo12" style="display:none">
+            <div class="w3-container">
+              {% if new_comment %}
+                <h2>Your comment has been added.</h2>
+              {% else %}
+                <h2>Add a new comment</h2>
+                <form action="." method="post" class="w3-theme-l5 w3-input w3-large">
+                  {{ comment_form.as_p }}
+                  {% csrf_token %}
+                  <p><input type="submit" value="Add comment"></p>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+         </div>
+  <hr>
+    <p class="w3-clear"></p>
+
+
+            <!-- Similar Posts -->
+    {% if similar_posts %}
+    <div class="w3-card w3-margin-top">
+      <div class="w3-container w3-padding">
+        <h4>Similar posts</h4>
+      </div>
+
+
+      <ul class="w3-ul w3-hoverable w3-white">
+          {% for post in similar_posts %}
+          <a href="{% url 'post_detail' post.slug %}">
+        <li class=" w3-hide-medium w3-hide-small">
+          <img src="{% if post.postavatar %}{{ post.postavatar.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="Image" class="w3-left w3-margin-right" style="height:30px;width:50px">
+          <span class="w3-large">{{ post.title }}</span><br>
+          <span>{{ post.title|truncatewords:10|linebreaks }}</span>
+        </li>
+          </a>
+          {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+
+
+    <hr>
+
+    <p class="w3-clear"></p>
+
+
+
+    <!-- Example of comment field -->
+          <div class="w3-container">
+            {% with comments.count as total_comments %}
+                 <h4>
+             {{ total_comments }} comment{{ total_comments|pluralize }}
+                  </h4>
+             {% endwith %}
+          </div>
+
+          <div class="w3-row w3-margin-bottom w3-theme-l5 w3-small" id="demo11" style="display:block">
+            <hr>
+             {% for comment in comments %}
+              <div class="w3-col l2 m3">
+                <img src="{% static 'images/3.jpg' %}" style="width:90px;">
+              </div>
+              <div class="w3-col l10 m9">
+                <h4>{{ comment.owner }}<span class="w3-opacity w3-medium"> {{ comment.created }}  #{{ forloop.counter }}</span></h4>
+                <p>{{ comment.body|linebreaks }}</p>
+              </div>
+            {% empty %}
+                  <p>There are no comments yet.</p>
+            {% endfor %}
+          </div>
+    <hr>
+
+  </div>
+
+<!-- End Page Content -->
+</div>
+{% endblock %}
