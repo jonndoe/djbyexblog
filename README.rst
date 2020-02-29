@@ -32,7 +32,7 @@ To RUN:
 
  - conda activate env38_dj_by_ex_blog
 
- - sudo docker-compose up
+ - sudo docker-compose up (or sudo docker-compose up --build)
 
 
 
@@ -54,17 +54,13 @@ TODO:
  - write test for view.post_detail fbv.
 
 OBSERVATIONS:
- - p.240 (name="Stracchino") to be removed, for logical continuation.
-
+ - When trying to add image to posts it could be oserror,
+    so arialbd.ttf to be added to /usr/share/fonts/arialbd.ttf (on container)
+    then commit the container to save the changes.
 
 
 # SUGGESTIONS:
  - Some suggestions here.
-
-
-
-
-
 
 
 p.177 put 'in' instead on 'tn'
@@ -72,9 +68,3 @@ p.177 put 'in' instead on 'tn'
 Somewhere throughout the book codesamples goes
 out of the page border, not showing the full code.
 
-p.244 test for views doesnt work, fail....
-
-
-
-
-p.264 Missing white space at the end.
