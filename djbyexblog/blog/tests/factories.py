@@ -17,9 +17,10 @@ class PostFactory(factory.django.DjangoModelFactory):
     title = factory.fuzzy.FuzzyText()
     slug = factory.LazyAttribute(lambda obj: slugify(obj.title))
     body = factory.Faker('paragraph', nb_sentences=6,)
-    status = factory.fuzzy.FuzzyChoice(
-        [x[0] for x in Post.STATUS_CHOICES]
-    )
+    #status = factory.fuzzy.FuzzyChoice(
+    #    [x[0] for x in Post.STATUS_CHOICES]
+    #)
+    status = 'published'
     author = factory.SubFactory(UserFactory)
 
     class Meta:

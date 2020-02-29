@@ -7,10 +7,23 @@
 
   <ul>
     {% for post in view.get_object %}
-      <li><a href="#">{{ post }}</a> </li>
+      <li><a href="{% url 'blog:detail' post.publish.year post.publish.month post.publish.day post.slug %}">{{ post }}</a> </li>
     {% endfor %}
   </ul>
 
+
+
+  {% for post in view.get_object %}
+    <h2>
+      <a href="{{ post.get_absolute_url }}">
+        {{ post.title }}
+      </a>
+    </h2>
+    <p class="date">
+      Published {{ post.publish }} by {{ post.author }}
+    </p>
+    {{ post.body|truncatewords:30|linebreaks }}
+  {% endfor %}
 
   <hr/>
   <p>Don't see a post listed here?</p>

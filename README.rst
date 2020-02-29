@@ -50,16 +50,16 @@ To RUN:
 TODO:
 
  - run pytest from docker_container itself(now I run it from conda_env).
+ - view.post_detail to be switched to class based view.
+ - write test for view.post_detail fbv.
 
 OBSERVATIONS:
  - p.240 (name="Stracchino") to be removed, for logical continuation.
- - p. ___ def test_good_cheese_detail_view(rf, admin_user):
-      we dont need admin user here.
- - p.119 Its actually runs 9 tests instead of 8 as stated in the book.
+
 
 
 # SUGGESTIONS:
- -- Setting up a docker-driven postgres is a better and simple-configurable idea.
+ - Some suggestions here.
 
 
 
