@@ -24,5 +24,9 @@ RUN apt-get upgrade -y
 RUN pip --retries 5 install --upgrade pip
 RUN pip --timeout 15 --retries 5 install -r requirements/local.txt
 
+# Copy arialbd.ttf to /usr/share/fonts/arialbd.ttf
+RUN mkdir /usr/share/fonts/
+RUN cp /code/djbyexblog/static/fonts/arialbd.ttf /usr/share/fonts/arialbd.ttf
+
 
 

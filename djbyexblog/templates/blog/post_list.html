@@ -1,19 +1,44 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Post List{% endblock title %}
+
+
+{% block title %}
+    {% if subject %}
+        {{ subject.title }} posts
+    {% else %}
+        All Posts
+    {% endif %}
+{% endblock %}
+
+
+
+<!-- hero images style -->
+{% block style %}
+<style>
+.bgimgpostlist {
+    //This url is left here as working example
+    //background-image: url('{% if post.postavatar %}{{ post.postavatar.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+</style>
+{% endblock style %}
+
+
+
 
 {% block content %}
   <h2>Posts List</h2>
 
   <ul>
-    {% for post in view.get_object %}
+    {% for post in posts %}
       <li><a href="{% url 'blog:detail' post.publish.year post.publish.month post.publish.day post.slug %}">{{ post }}</a> </li>
     {% endfor %}
   </ul>
 
-
-
-  {% for post in view.get_object %}
+  {% for post in posts %}
     <h2>
       <a href="{{ post.get_absolute_url }}">
         {{ post.title }}
@@ -33,3 +58,4 @@
     </a>
   </p>
 {% endblock content %}
+
