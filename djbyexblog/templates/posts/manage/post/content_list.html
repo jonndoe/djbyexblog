@@ -13,8 +13,8 @@ Post: {{ post.title }}
     <div class="w3-container w3-quarter w3-center">
     <h3 class="w3-center">Add content:</h3>
     <ul class="content-types" id="list-content">
-        <li><a href="{% url 'post_content_create' post.id 'text' %}"><button class="w3-button w3-theme w3-block">Text</button> </a></li>
-        <li><a href="{% url 'post_content_create' post.id 'image' %}"><button class="w3-button w3-theme w3-block">Image</button></a></li>
+        <li><a href="{% url 'post:post_content_create' post.id 'text' %}"><button class="w3-button w3-theme w3-block">Text</button> </a></li>
+        <li><a href="{% url 'post:post_content_create' post.id 'image' %}"><button class="w3-button w3-theme w3-block">Image</button></a></li>
     </ul>
     </div>
 
@@ -29,8 +29,8 @@ Post: {{ post.title }}
                 {% with item=content.item %}
                 <p class="w3-left"><h5><strong>{{ item|model_name }}</strong></h5> <span class="order">#{{ content.order|add:1}} </span></p>
                     <p>{{ item }}</p>
-                    <a href="{% url 'post_content_update' post.id item|model_name item.id %}" class="w3-button w3-green w3-block">Edit</a>
-                    <form action="{% url 'post_content_delete' content.id %}" method="post">
+                    <a href="{% url 'post:post_content_update' post.id item|model_name item.id %}" class="w3-button w3-green w3-block">Edit</a>
+                    <form action="{% url 'post:post_content_delete' content.id %}" method="post">
                         <input type="submit" value="Delete" class=" w3-red">
                         {% csrf_token %}
                     </form>

@@ -1,23 +1,23 @@
 from django.contrib import admin
-from .models import Post, Subject, MyComment, Content
+from .models import Subject, Post, MyComment, Content
+
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ['title', 'slug']
+    prepopulated_fields = {'slug': ('title',)}
 
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'author', 'publish', 'status')
-    list_filter = ('status', 'created', 'publish', 'author')
-    search_fields = ('title', 'body')
-    prepopulated_fields = {'slug': ('title',)}
-    raw_id_fields = ('author',)
+    list_display = ['title', 'subject', 'created', 'publish', 'status']
+    list_filter = ['status', 'created', 'subject', 'owner', 'publish']
+    search_fields = ['title',]
+    prepopulated_fields = {'slug':('title',)}
+    raw_id_fields = ('owner',)
     date_hierarchy = 'publish'
     ordering = ('status', 'publish')
-
-
-
-@admin.register(Subject)
-class SubjectAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title',)}
 
 
 @admin.register(MyComment)

@@ -91,7 +91,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "djbyexblog.users.apps.UsersConfig",
     "djbyexblog.example.apps.ExampleConfig",
-    "djbyexblog.blog.apps.BlogConfig",
+    #"djbyexblog.blog.apps.BlogConfig",
+    "djbyexblog.app_posts.apps.AppPostsConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -290,3 +291,13 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Default css classes for widgets and labels
+DEFAULT_CSS = {
+           'error': 'w3-panel w3-red',        # displayed in the label
+           'errorlist': 'w3-padding-8 w3-red', # encloses the error list
+           'required': 'w3-text-indigo',     # used in the label and label + input enclosing box. NB: w3-validate only works if the input precedes the label!
+           'label': 'w3-label',
+           'Textarea': 'w3-input w3-border w3-round',
+           'TextInput': 'w3-input w3-border w3-round',
+           'Select': 'w3-select w3-border',
+           }

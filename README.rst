@@ -58,6 +58,10 @@ OBSERVATIONS:
     so arialbd.ttf to be added to /usr/share/fonts/arialbd.ttf (on container)
     then commit the container to save the changes.
 
+ to create pg_trgm extention on running docker postgres-container:
+ - sudo docker exec -it c4605aeda3ca psql djbyexblog -U postgres
+ - CREATE EXTENSION pg_trgm;
+
 
 # SUGGESTIONS:
  - Some suggestions here.

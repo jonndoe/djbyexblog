@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% load thumbnail %}
+
+{% load static %}
+
+{% block title %}{{ user.get_full_name }}{% endblock %}
+
+
+<!-- hero images style -->
+{% block style %}
+<style>
+body,h1,h5 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+    //background-image: url('{% static 'img/no_image.png' %}');
+    background-image: url('{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+.comment:nth-child(even) {
+    background:red;
+    }
+.tagmargin {margin-bottom:2px;}
+</style>
+{% endblock style %}
+
+
+
+{% block content %}
+
+
+
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:5px">
+
+
+    <!-- problem with background hero image, if we remove <br> from div then it dissaperas completely.....to be fixed -->
+    <div class="bgimg w3-display-container w3-text-white w3-margin-bottom w3-padding w3-hide-small">
+        <br><br><br><br><br><br><br><br><br><br>
+   </div>
+
+
+  <!-- The Grid -->
+  <div class="w3-row">
+
+    <!-- Left Column -->
+    <div class="w3-col m3">
+      <!-- Profile -->
+      <div class="w3-card w3-round w3-white">
+        <div class="w3-container w3-center">
+         <h2 class="w3-center">{{ user.username }}</h2>
+         <p class="w3-center"><img src="{% if user.profile.photo %} {{ user.profile.photo.url }} {% endif %}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+         <p> London, UK</p>
+         <p>{{ user.profile.date_of_birth }}</p>
+        </div>
+      </div>
+      <br>
+
+      <!-- Accordion -->
+      <div class="w3-card w3-round">
+        <div class="w3-white">
+          <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align w3-center">POSTS</button>
+          <div id="Demo2" class="w3-hide w3-container">
+            <p class="w3-hover-text-blue"><a href="{% url 'posts_of_user' user.id %}">Posts</a></p>
+          </div>
+          <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align w3-center">IMAGES</button>
+          <div id="Demo3" class="w3-hide w3-container">
+         <div class="w3-row-padding">
+         <br>
+           <div class="w3-half">
+             <img src="../w3images/lights.jpg" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="../w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="../w3images/mountains.jpg" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="../w3images/forest.jpg" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="../w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="../w3images/fjords.jpg" style="width:100%" class="w3-margin-bottom">
+           </div>
+         </div>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <!-- Interests -->
+      <div class="w3-card w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+          <p>Interests</p>
+          <p>
+            <span class="w3-tag w3-small w3-theme-d5">News</span>
+            <span class="w3-tag w3-small w3-theme-d4">W3Schools</span>
+            <span class="w3-tag w3-small w3-theme-d3">Labels</span>
+            <span class="w3-tag w3-small w3-theme-d2">Games</span>
+            <span class="w3-tag w3-small w3-theme-d1">Friends</span>
+            <span class="w3-tag w3-small w3-theme">Games</span>
+            <span class="w3-tag w3-small w3-theme-l1">Friends</span>
+            <span class="w3-tag w3-small w3-theme-l2">Food</span>
+            <span class="w3-tag w3-small w3-theme-l3">Design</span>
+            <span class="w3-tag w3-small w3-theme-l4">Art</span>
+            <span class="w3-tag w3-small w3-theme-l5">Photos</span>
+          </p>
+        </div>
+      </div>
+      <br>
+
+
+    <!-- End Left Column -->
+    </div>
+
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+
+
+
+
+        {% if user_posts %}
+            {% for post in user_posts %}
+                <div class="w3-card-4 w3-magrin-bottom w3-margin-left w3-margin-right w3-white">
+                  <div class="bgimgpostlist w3-display-container w3-text-white" style="background-image: url('{% if post.postavatar %}{{ post.postavatar.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}');">
+                   <br><br><br><br><br><br>
+                  </div>
+
+                  <div class="w3-container">
+                    <div class="w3-row">
+                      <div class="w3-left">
+                        <h3 class="">{{ post.title }}</h3>
+                      </div>
+                      <div class="w3-margin-left w3-left">
+                          <p>
+                              <span class="w3-right">
+                                  <span class="w3-tag w3-theme">{{ post.subject }}</span>
+                              </span>
+                          </p>
+                      </div>
+                      <div class="w3-right">
+                        <p><span class="w3-right">
+                        {% if post.tags.all %}
+                        {% endif %}
+                        {% for tag in post.tags.all %}
+                           <a href="{% url 'post_list_by_tag' tag.slug %}">
+                              <span class="w3-tag tagmargin">{{ tag.name }}</span>
+                           </a>
+                        {% endfor %}
+                        </span></p>
+                      </div>
+                    </div>
+                    <div class="w3-row">
+                      <div class="w3-col m8 s12">
+                        <a href="{% url 'post:post_detail' post.slug %}">
+                        <p><button class="w3-button w3-white w3-border" ><b>READ MORE »</b></button></p>
+                        </a>
+                      </div>
+                      <div class="w3-col m4">
+                        <p><span class="w3-padding-large w3-right"><span class="w3-opacity">16 min</span></span></p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <hr>
+            {% endfor %}
+        {% elif user_images %}
+              <p> Here to be user images </p>
+        {% else %}
+             <div class="w3-row-padding">
+               <div class="w3-col m12">
+                 <div class="w3-card w3-round w3-white">
+                   <div class="w3-container w3-padding">
+                       <h6 class="w3-opacity">Message to <b>{{ user.username }}</b></h6>
+                     <p contenteditable="true" class="w3-border w3-padding">Message:</p>
+                     <button type="button" class="w3-button w3-theme-l1"><i class="fa fa-pencil"></i>  Send</button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+        {% endif %}
+
+    <!-- End Middle Column -->
+    </div>
+
+    <!-- Right Column -->
+    <div class="w3-col m2">
+
+      <div class="w3-card w3-round w3-white w3-center">
+        <div class="w3-container">
+        {% with total_followers=user.followers.count %}
+
+          <h3><b><span class="count"><span class="total">{{ total_followers }}</span>follower{{ total_followers|pluralize }}</span></b></h3>
+          <div class="w3-row w3-opacity">
+              <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+                {% if request.user not in user.followers.all %}
+
+                      <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check">Follow</i></button>
+
+                {% else %}
+
+                       <button class="w3-button w3-block w3-red w3-green w3-section" title="Decline"><i class="fa fa-remove">Unfollow</i></button>
+
+                {% endif %}
+              </a>
+          </div>
+        {% endwith %}
+        </div>
+      </div>
+        <br>
+      <br>
+      <br>
+    <!-- End Right Column -->
+    </div>
+  <!-- End Grid -->
+  </div>
+
+<!-- End Page Container -->
+</div>
+<br>
+
+
+
+
+
+
+
+
+
+
+    <h1>{{ user.username }}</h1>
+    <div class="profile-info">
+        {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
+            <img src="{{ im.url }}" class="user-detail">
+        {% endthumbnail %}
+    </div>
+    {% with total_followers=user.followers.count %}
+        <div id="image-list" class="image-container">
+            {% include "images/image/list_ajax.html" with images=user.images_created.all %}
+        </div>
+    {% endwith %}
+{% endblock %}
+
+{% block domready %}
+    $('a.follow').click(function(e){
+            e.preventDefault();
+            $.post('{% url "user_follow" %}',
+            {id: $(this).data('id'), action: $(this).data('action')},
+            function(data){
+            if (data['status'] == 'ok') {
+                 var previous_action = $('a.follow').data('action');
+
+                 // toggle data-action
+                 $('a.follow').data('action', previous_action == 'follow' ? 'unfollow' : 'follow');
+
+                 // toggle link text
+                 $('a.follow button i').text(previous_action == 'follow' ? 'Unfollow' : 'Follow');
+                 // toggle button color
+                 $('a.follow button').toggleClass('w3-red');
+                 // toggle button i class
+                 $('a.follow button i').toggleClass('fa fa-remove');
+                 $('a.follow button i').toggleClass('fa fa-check');
+
+                 // update total followers
+                 var previous_followers = parseInt($('span.count .total').text());
+                 $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+                }
+            }
+        );
+    });
+{% endblock %}

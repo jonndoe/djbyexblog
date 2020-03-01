@@ -57,11 +57,15 @@
               </li>
               <li>
                 {# URL for posts_list #}
-                <a class="nav-link" href="{% url 'blog:list' %}">Posts</a>
+                <a class="nav-link" href="{% url 'post:post_list' %}">Posts</a>
               </li>
               <li class="nav-item">
                 {# This is our custom url to example page of cheeses list #}
                 <a class="nav-link" href="{% url 'example:list' %}">Cheeses</a>
+              </li>
+              <li class="nav-item">
+                {# This is our custom url to post search #}
+                <a class="nav-link" href="{% url 'post:post_search' %}">Find Post</a>
               </li>
             {% else %}
               <li class="nav-item">

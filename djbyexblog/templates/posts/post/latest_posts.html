@@ -10,7 +10,7 @@
 
 
         {% for post in latest_posts %}
-      <a href="{% url 'post_detail' post.slug %}">
+      <a href="{% url 'post:post_detail' post.slug %}">
       <li class="w3-padding-16">
         <img src="{% static 'images/1.jpg' %}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
         <span class="w3-large">{{ post.owner }}</span><br>

@@ -16,3 +16,4 @@ django-compressor==2.4  # https://github.com/django-compressor/django-compressor
 django-autoslug==1.9.6
 django-countries==5.5
 django-imagekit==4.0.2
+django-braces

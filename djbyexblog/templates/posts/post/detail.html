@@ -31,7 +31,7 @@ body, html {height: 100%}
 {% block content %}
 <!-- Page content -->
 <div class="w3-content" style="max-width:2000px;margin-top:1px">
-
+<a href="{% url 'post:post_content_list' post.id %}">ADD CONTENT TO POST{{ post.id }}</a>
 
 
 
@@ -55,7 +55,7 @@ body, html {height: 100%}
       Tags:
          {% endif %}
       {% for tag in post.tags.all %}
-      <a href="{% url 'post_list_by_tag' tag.slug %}">
+      <a href="{% url 'post:post_list_by_tag' tag.slug %}">
         <span class="w3-tag">{{ tag.name }}</span>
       </a>
       {% endfor %}
@@ -63,7 +63,7 @@ body, html {height: 100%}
         {% with subject=post.subject %}
         <div>
             <p>
-            <a href="{% url 'post_list_subject' subject.slug %}"> {{ subject.title }}</a>. {{ post.contents.count }} contents.
+            <a href="{% url 'post:post_list_subject' subject.slug %}"> {{ subject.title }}</a>. {{ post.contents.count }} contents.
             </p>
         </div>
     {% endwith %}
@@ -133,7 +133,7 @@ body, html {height: 100%}
 
       <ul class="w3-ul w3-hoverable w3-white">
           {% for post in similar_posts %}
-          <a href="{% url 'post_detail' post.slug %}">
+          <a href="{% url 'post:post_detail' post.slug %}">
         <li class=" w3-hide-medium w3-hide-small">
           <img src="{% if post.postavatar %}{{ post.postavatar.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="Image" class="w3-left w3-margin-right" style="height:30px;width:50px">
           <span class="w3-large">{{ post.title }}</span><br>

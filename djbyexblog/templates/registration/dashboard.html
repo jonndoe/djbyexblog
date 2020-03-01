@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% load static %}
+
+{% block bodystyle %}
+<body class="w3-theme-l5">
+{% endblock %}
+
+<!-- hero images style -->
+{% block style %}
+<style>
+body,h1,h5 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+    //background-image: url('{% static 'img/no_image.png' %}');
+    background-image: url('{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+.tagmargin {margin-bottom:2px;}
+</style>
+{% endblock style %}
+
+
+
+{% block content %}
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:5px">
+
+
+
+  <!-- problem with background hero image, if we remove <br> from div then it dissaperas completely.....to be fixed -->
+    <div class="bgimg w3-display-container w3-text-white w3-margin-bottom w3-padding w3-hide-small">
+        <br><br><br><br><br><br><br><br><br><br>
+    </div>
+
+  {% block currenpagetitle %}
+  {% endblock %}
+
+
+  <!-- The Grid -->
+  <div class="w3-row">
+
+    <!-- Left Column -->
+    <div class="w3-col m3">
+      <!-- Profile -->
+      <div class="w3-card w3-round w3-white">
+        <div class="w3-container w3-center">
+         <h2 class="w3-center">{{ user.username }}</h2>
+         <p class="w3-center"><img src="{% if user.profile.photo %} {{ user.profile.photo.url }} {% endif %}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+         <p> London, UK</p>
+         <p>{{ user.profile.date_of_birth }}</p>
+        </div>
+      </div>
+      <br>
+
+
+      <div class="w3-card w3-round">
+        <a href="{% url 'post:post_create' %}"><button onclick="" class="w3-button w3-block w3-green w3-left-align w3-center">CREATE NEW POST</button></a>
+      </div>
+      <br/>
+      <!-- Accordion -->
+      <br>
+      <!-- Interests -->
+      <div class="w3-card w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+          <p>Interests</p>
+          <p>
+            <span class="w3-tag w3-small w3-theme-d5">News</span>
+            <span class="w3-tag w3-small w3-theme-d4">W3Schools</span>
+            <span class="w3-tag w3-small w3-theme-d3">Labels</span>
+            <span class="w3-tag w3-small w3-theme-d2">Games</span>
+            <span class="w3-tag w3-small w3-theme-d1">Friends</span>
+            <span class="w3-tag w3-small w3-theme">Games</span>
+            <span class="w3-tag w3-small w3-theme-l1">Friends</span>
+            <span class="w3-tag w3-small w3-theme-l2">Food</span>
+            <span class="w3-tag w3-small w3-theme-l3">Design</span>
+            <span class="w3-tag w3-small w3-theme-l4">Art</span>
+            <span class="w3-tag w3-small w3-theme-l5">Photos</span>
+          </p>
+        </div>
+      </div>
+
+    <!-- End Left Column -->
+    </div>
+
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+
+      {% if my_posts %}
+        {% for post in my_posts %}
+        <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+          <img src="{% if user.profile.photo %} {{ user.profile.photo.url }} {% endif %}" alt="Avatar" class="w3-left w3-round w3-margin-right" style="width:60px">
+          <span class="w3-right w3-opacity">32 min</span>
+          <h4>{{ user }}</h4><br>
+          <hr class="w3-clear">
+          <H3>{{ post.title }}</H3>
+          <a href="{% url 'post:post_edit' post.id %}"><button type="button" class="w3-button w3-theme-d2 w3-margin-bottom">EDIT</button></a>
+          <a href="{% url 'post:post_delete' post.id %}"><button type="button" class="w3-button w3-red w3-margin-bottom">DELETE</button></a>
+          <a href="{% url 'post:post_content_list' post.id %}"><button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-pencil"></i>  ADD CONTENT</button></a>
+        </div>
+        {% empty %}
+          <p>You have not created any post yet.</p>
+        {% endfor %}
+      {% endif %}
+
+
+
+    <!-- End Middle Column -->
+    </div>
+
+    <!-- Right Column -->
+    <div class="w3-col m2">
+      <div class="w3-card w3-round w3-white w3-center">
+        <div class="w3-container">
+          <p>Friend Request</p>
+          <img src="../w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
+          <span>Jane Doe</span>
+          <div class="w3-row w3-opacity">
+            <div class="w3-half">
+              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
+            </div>
+            <div class="w3-half">
+              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <br>
+    <!-- End Right Column -->
+    </div>
+
+<h2>What's happening</h2>
+<div id="action-list">
+{% for action in actions %}
+    {% include "actions/action/detail.html" %}
+{% endfor %}
+</div>
+
+  <!-- End Grid -->
+  </div>
+
+<!-- End Page Container -->
+</div>
+<br>
+
+
+
+
+
+{% endblock %}

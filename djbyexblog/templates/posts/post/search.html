@@ -19,7 +19,7 @@
 
             <ul class="w3-ul w3-hoverable w3-white">
               {% for post in results %}
-              <a href="{% url 'post_detail' post.slug %}">
+              <a href="{% url 'post:post_detail' post.slug %}">
               <li class="w3-padding-16">
                 <img src="{% static 'images/1.jpg' %}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
                 <span class="w3-large">{{ post.title }}</span><br>
@@ -31,7 +31,7 @@
           </div>
           <hr>
         <div class="w3-container w3-center">
-            <p><a href="{% url 'post_search' %}"><button class="w3-button w3-blue" >Search again</button></a></p>
+            <p><a href="{% url 'post:post_search' %}"><button class="w3-button w3-blue" >Search again</button></a></p>
         </div>
     {% else %}
     <div class="w3-container w3-center">

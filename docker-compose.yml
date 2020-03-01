@@ -6,7 +6,7 @@ services:
   web:
 
     #build: .
-    image: djbyexblog_web:v4
+    image: djbyexblog_web:v5
     command: python /code/manage.py runserver 0.0.0.0:8000
     #command: gunicorn crud_project.wsgi -b 0.0.0.0:8000
 

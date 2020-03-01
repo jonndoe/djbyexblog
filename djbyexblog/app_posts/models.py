@@ -1,18 +1,28 @@
 from django.db import models
-from django.utils import timezone
-from django.conf import settings
-from django.urls import reverse
+from django.contrib.auth import get_user_model
+
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from .fields import OrderField
-from django.template.loader import render_to_string
 
+from .fields import OrderField
+
+from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
+from django.utils import timezone
+
+from imagekit import ImageSpec
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill, Adjust, ResizeToFit
-from djbyexblog.blog.processors import Watermark
+from app_posts.processors import Watermark
+
+from django.urls import reverse
 
 from taggit.managers import TaggableManager
+
 from django.template.defaultfilters import slugify
+
+
+
 
 class Subject(models.Model):
     title = models.CharField(max_length=200)
@@ -25,14 +35,11 @@ class Subject(models.Model):
         return self.title
 
 
-
-
-
-
-
 class PublishedManager(models.Manager):
     def get_queryset(self):
-        return super(PublishedManager, self).get_queryset().filter(status='published')
+        return super(PublishedManager,
+                     self).get_queryset()\
+                          .filter(status='published')
 
 
 
@@ -41,53 +48,54 @@ class Post(models.Model):
         ('draft', 'Draft'),
         ('published', 'Published'),
     )
+    owner = models.ForeignKey(get_user_model(),
+                              related_name='posts_created',
+                              on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject,
                                 related_name='posts',
                                 on_delete=models.CASCADE)
-    title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250,
-                            unique_for_date='publish')
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,
-                               on_delete=models.CASCADE,
-                               related_name='blog_posts')
-    body = models.TextField()
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
                               default='draft')
     postavatar = ProcessedImageField(upload_to="postavatars/%Y/%m/%d/",
-                                     blank=True,
-                                     processors=[
-                                         ResizeToFit(1600, 500,
-                                                     #upscale=False
-                                                     ),
-                                         Watermark(),
-                                     ],
-                                     format='JPEG',
-                                     options={'quality': 60})
+                               blank=True,
+                               processors=[
+                                   ResizeToFit(1600, 500,
+                                               #upscale=False
+                                               ),
+                                   Watermark(),
+                               ],
+                               format='JPEG',
+                               options={'quality': 60})
 
-    objects = models.Manager() # dfault manager
-    published = PublishedManager() # custom manager
+    objects = models.Manager() # the default manager
+    published = PublishedManager() # Custom manager
     tags = TaggableManager()
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
+
     class Meta:
-        ordering = ('-publish',)
+        ordering = ['-created']
 
     def __str__(self):
-        return self.title
+        return  self.title
 
-    def get_absolute_url(self):
-        return reverse('blog:detail',
-                       args=[self.publish.year,
-                             self.publish.month,
-                             self.publish.day,
-                             self.slug,])
+    #def get_absolute_url(self):
+       # return reverse('post_detail_absolute',
+       #                args=[self.publish.year,
+        #                     self.publish.month,
+        #                     self.publish.day,
+       #                      self.slug])
 
 
 class MyComment(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+    owner = models.ForeignKey(get_user_model(),
                               on_delete=models.CASCADE,
                               related_name='mycomments')
     post = models.ForeignKey(Post,
@@ -105,6 +113,8 @@ class MyComment(models.Model):
 
     def __str__(self):
         return 'Comment by {} on {}'.format(self.name, self.post)
+
+
 
 
 class Content(models.Model):
@@ -127,7 +137,7 @@ class Content(models.Model):
 
 
 class ItemBase(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+    owner = models.ForeignKey(get_user_model(),
                               related_name='%(class)s_related',
                               on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
@@ -138,7 +148,7 @@ class ItemBase(models.Model):
         abstract = True
 
     def render(self):
-        return render_to_string('blog/content/{}.html'.format(
+        return render_to_string('posts/content/{}.html'.format(
             self._meta.model_name), {'item': self})
 
     def __str__(self):
@@ -170,3 +180,4 @@ class Image(ItemBase):
 
 class Video(ItemBase):
     url = models.URLField()
+
