@@ -36,17 +36,23 @@
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'home' %}">djbyexblog</a>
+        <a class="navbar-brand" href="#">djbyexblog</a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">About</a>
-            </li>
             {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                {# This is our custom url to example page of cheeses list #}
+                <a class="nav-link" href="{% url 'example:list' %}">Cheeses</a>
+              </li>
+              <li>
+                {# URL for posts_list #}
+                <a class="nav-link" href="{% url 'post:post_list' %}">Posts</a>
+              </li>
+              <li class="nav-item">
+                {# This is our custom url to post search #}
+                <a class="nav-link" href="{% url 'post:post_search' %}">Find Post</a>
+              </li>
               <li class="nav-item">
                 {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
@@ -55,18 +61,9 @@
                 {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
               </li>
-              <li>
-                {# URL for posts_list #}
-                <a class="nav-link" href="{% url 'post:post_list' %}">Posts</a>
-              </li>
-              <li class="nav-item">
-                {# This is our custom url to example page of cheeses list #}
-                <a class="nav-link" href="{% url 'example:list' %}">Cheeses</a>
-              </li>
-              <li class="nav-item">
-                {# This is our custom url to post search #}
-                <a class="nav-link" href="{% url 'post:post_search' %}">Find Post</a>
-              </li>
+
+
+
             {% else %}
               <li class="nav-item">
                 {# URL provided by django-allauth/account/urls.py #}
@@ -95,10 +92,6 @@
       {% block content %}
         <p>EveryCheese is the Ultimate Cheese Index! This text is inherited on other pages!</p>
       {% endblock content %}
-      </div>
-      <div id="sidebar">
-        <h2>My blog</h2>
-          <p>This is my blog</p>
       </div>
     </div> <!-- /container -->
 

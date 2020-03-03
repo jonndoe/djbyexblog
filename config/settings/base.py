@@ -86,6 +86,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     'django_countries',
     "taggit",
+    "sorl.thumbnail",
 ]
 
 LOCAL_APPS = [

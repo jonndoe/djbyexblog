@@ -52,6 +52,9 @@ TODO:
  - run pytest from docker_container itself(now I run it from conda_env).
  - view.post_detail to be switched to class based view.
  - write test for view.post_detail fbv.
+ - exclude blog folder from coverage.
+ - When refreshing the page after comment added, it automatically added multiple
+   times. Should be only one time added.
 
 OBSERVATIONS:
  - When trying to add image to posts it could be oserror,

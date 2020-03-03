@@ -13,7 +13,7 @@ from django.utils import timezone
 from imagekit import ImageSpec
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill, Adjust, ResizeToFit
-from app_posts.processors import Watermark
+from djbyexblog.app_posts.processors import Watermark
 
 from django.urls import reverse
 
